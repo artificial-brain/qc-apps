@@ -111,7 +111,7 @@ def train(selected_option):
             # print("Episode", episode, "Average snake length without exploration:", averageLength,
             #       'Number of times quantum random number generated:', rand_int_count)
         if episode % 500 == 0:
-            st.write("Episode", episode, 'Number of times quantum random number generated:', rand_int_count)
+            st.write("Episode", episode, 'Quantum random number generated', rand_int_count, 'times')
             rand_uniform_count = 0
             rand_int_count = 0
 
@@ -120,10 +120,12 @@ def train(selected_option):
     print("Generating data for animation...")
     # plotEpisodes = [0, 200, 300, 400, 500, 600, 700, 800, 900]
     plotEpisodes = [0, 200, 400, 600, 800, 1000, 2500, 5000, 10000]
+    # plotEpisodes = [2500, 5000, 10000]
     fig, axes = plt.subplots(3, 3, figsize=(9, 9))
 
-    axList = []
+    print('axes', axes)
 
+    axList = []
 
     for i, row in enumerate(axes):
         for j, ax in enumerate(row):
@@ -175,29 +177,26 @@ def train(selected_option):
                 print("Game", k, "finished, total moves:", len(dataArrays[0]))
                 break
 
-    print("Animating snakes at different episodes...")
-
     numFrames = len(dataArrays[0])
     ani = animation.FuncAnimation(fig, func=animate, frames=numFrames, blit=True, interval=75, repeat=False, )
-    plt.show(block=False)
 
-    print("Saving to file")
+    st.write("Saving Training Video")
     ani.save('AnimatedGames.mp4', fps=15, extra_args=['-vcodec', 'libx264'])
-
-    print("Done")
+    video_file = open('AnimatedGames.mp4', 'rb')
+    video_bytes = video_file.read()
+    st.video(video_bytes)
 
 
 if __name__ == '__main__':
-
-    st.title('Demo of quantumcat Random Number generator')
+    st.write('## Demo of quantumcat Random Number generator')
     select_box = providers.DEFAULT_PROVIDER
     with st.sidebar:
-        st.write("## Provider")
+        st.write("## Quantum Provider")
 
         select_box = st.selectbox('From which quantum provider you want to generate random number?',
                                        ('IBM Qiskit', 'Google Cirq', 'AWS Braket'))
         select_button = st.button('Start Training')
 
     if select_button:
-        st.write('Training started')
+        st.write('Training started for 10000 Episodes. A video of trained snake would be shown post training.')
         train(select_box)
