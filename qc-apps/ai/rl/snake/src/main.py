@@ -43,6 +43,7 @@ def evaluateScore(Q, boardDim, numRuns, displayGame=False):
     return np.average(scores), scores
 
 def animate(frameNum):
+    print(frameNum)
     for i, im in enumerate(ims):
         labels[i].set_text("Length: " + str(scores[i][frameNum]))
         ims[i].set_data(dataArrays[i][frameNum])
@@ -87,7 +88,7 @@ def train(selected_option):
                     provider_option = providers.GOOGLE_PROVIDER
                 elif selected_option == 'AWS Braket':
                     provider_option = providers.AMAZON_PROVIDER
-                quantum_random_num = RandomNumber(length=1, output_type=DECIMAL).\
+                quantum_random_num = RandomNumber(length=2, output_type=DECIMAL).\
                     execute(provider=provider_option)
                 rand_int_count = rand_int_count + 1
                 action = quantum_random_num
@@ -126,7 +127,7 @@ def train(selected_option):
     print('axes', axes)
 
     axList = []
-
+    st.write(axes)
     for i, row in enumerate(axes):
         for j, ax in enumerate(row):
             ax.set_title("Episode " + str(plotEpisodes[i * len(row) + j]))
@@ -178,17 +179,30 @@ def train(selected_option):
                 break
 
     numFrames = len(dataArrays[0])
-    ani = animation.FuncAnimation(fig, func=animate, frames=numFrames, blit=True, interval=75, repeat=False, )
-
-    st.write("Saving Training Video")
-    ani.save('AnimatedGames.mp4', fps=15, extra_args=['-vcodec', 'libx264'])
-    video_file = open('AnimatedGames.mp4', 'rb')
+    ani = animation.FuncAnimation(fig, func=animate, frames=1000, blit=True, interval=75, repeat=False, )
+    plt.show(block=False)
+    text_placeholder = st.empty()
+    text_placeholder.write("Generating Video...")
+    ani.save('videos/AnimatedGames.mp4', fps=15, extra_args=['-vcodec', 'libx264'])
+    video_file = open('videos/AnimatedGames.mp4', 'rb')
     video_bytes = video_file.read()
+    text_placeholder.empty()
     st.video(video_bytes)
 
 
 if __name__ == '__main__':
+
+    # Set page title and favicon.
+    quantumcat_logo_url = 'https://github.com/artificial-brain/quantumcat/raw/assets/quantumcat/logo/quantum_cat_logo.jpg?raw=true'
+    st.set_page_config(
+        page_title="quantumcat", page_icon=quantumcat_logo_url,
+    )
+
     st.write('## Demo of quantumcat Random Number generator')
+    trained_video_file = open('videos/trained_snake.mp4', 'rb')
+    trained_video_bytes = trained_video_file.read()
+    video_placeholder = st.empty()
+    video_placeholder.video(trained_video_bytes)
     select_box = providers.DEFAULT_PROVIDER
     with st.sidebar:
         st.write("## Quantum Provider")
@@ -199,4 +213,5 @@ if __name__ == '__main__':
 
     if select_button:
         st.write('Training started for 10000 Episodes. A video of trained snake would be shown post training.')
+        video_placeholder.empty()
         train(select_box)
