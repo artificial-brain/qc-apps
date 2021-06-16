@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <item name="quantum_progress_bar" type="id" />
+    <item name="description_text" type="id"/>
+    <item name="title_text" type="id"/>
+</resources>
