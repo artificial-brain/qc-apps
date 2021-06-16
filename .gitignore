@@ -128,6 +128,20 @@ dmypy.json
 # Pyre type checker
 .pyre/
 
+# Android
+*.iml
+.gradle
+/local.properties
+.DS_Store
+/build
+/captures
+.externalNativeBuild
+*.ipr
+*.iws
+.classpath
+.project
+.metadata
+
 # pycharm
 .idea/*
 quantumcat/data/
