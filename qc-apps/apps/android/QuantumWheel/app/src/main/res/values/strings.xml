@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">Quantum Wheel</string>
+    <string name="title">Welcome to Quantum Wheel!</string>
+    <string name="description">Let the nature choose for you - A random slot on the spinning wheel would be selected based on Quantum Superposition properties</string>
+    <string name="title_activity_main">MainActivity</string>
+    <string name="run_on_real_device">Run on Real device?</string>
+    <string name="real_device_notification">Please note that it may take 10-15 mins to get results from a real device due to limited availability</string>
+    <string name="okay">Okay</string>
+
+</resources>

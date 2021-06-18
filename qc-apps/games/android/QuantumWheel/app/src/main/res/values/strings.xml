@@ -1,6 +1,0 @@
-<resources>
-    <string name="app_name">Quantum Wheel</string>
-    <string name="title">Let the nature choose for you</string>
-    <string name="description">A random number on the spinning wheel would be selected based on Quantum Superposition properties</string>
-
-</resources>
