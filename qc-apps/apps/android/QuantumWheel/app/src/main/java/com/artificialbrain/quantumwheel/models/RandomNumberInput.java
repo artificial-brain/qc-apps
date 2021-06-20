@@ -1,4 +1,4 @@
-package com.artificialbrain.quantumwheel.api;
+package com.artificialbrain.quantumwheel.models;
 
 public class RandomNumberInput {
     public RandomNumberInput(int length, String api, String device) {

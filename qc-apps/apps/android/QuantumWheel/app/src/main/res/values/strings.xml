@@ -6,5 +6,17 @@
     <string name="run_on_real_device">Run on Real device?</string>
     <string name="real_device_notification">Please note that it may take 10-15 mins to get results from a real device due to limited availability</string>
     <string name="okay">Okay</string>
-
+    <string name="something_wrong_error"> Something went wrong - Nature is playing a game with you</string>
+    <string name="enter_text">Enter a number to bet on</string>
+    <string name="won_message">You won - Nature is with you this time!</string>
+    <string name="lost_message">You lost - Nature is against you this time!</string>
+    <string name="add_choice">Add a Choice</string>
+    <string name="submit_choices">Submit Choices</string>
+    <string name="customize_wheel_title">Customize fortune wheel</string>
+    <string name="customized_wheel_description">Let nature select it for you (For e.g: Should I go for a movie / outing, Which cuisine should I order? Be creative!)</string>
+    <string name="choices_in_range">* Please enter either 2, 4, 8 or 16 choices</string>
+    <string name="play">Play</string>
+    <string name="customize">Customize</string>
+    <string name="no_input_to_bet">Please enter a number to bet on </string>
+    <string name="input_not_in_range">Please enter input between 1 to 8</string>
 </resources>

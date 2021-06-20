@@ -1,4 +1,4 @@
-package com.artificialbrain.quantumwheel.api;
+package com.artificialbrain.quantumwheel.models;
 
 public class QuantumRandomNumber {
     public String getQuantum_random_num() {

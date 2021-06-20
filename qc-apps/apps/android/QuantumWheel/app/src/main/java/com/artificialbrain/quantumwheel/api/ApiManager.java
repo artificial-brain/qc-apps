@@ -1,5 +1,7 @@
 package com.artificialbrain.quantumwheel.api;
 
+import com.artificialbrain.quantumwheel.models.QuantumRandomNumber;
+import com.artificialbrain.quantumwheel.models.RandomNumberInput;
 import com.artificialbrain.quantumwheel.utils.Constants;
 
 import java.util.concurrent.TimeUnit;
