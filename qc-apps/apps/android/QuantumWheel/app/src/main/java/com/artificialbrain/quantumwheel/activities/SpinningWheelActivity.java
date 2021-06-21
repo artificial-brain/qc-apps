@@ -220,9 +220,11 @@ public class SpinningWheelActivity extends Activity {
     private void callRandomNumberAPI() {
         playButton.setEnabled(false);
         int length = (int)(Math.log(data.size()) / Math.log(2));
+        String provider = realDeviceSwitch.isChecked() ?
+                Constants.IBM_PROVIDER : Constants.GOOGLE_PROVIDER;
         String api = realDeviceSwitch.isChecked() ? Constants.API : "";
         String device = realDeviceSwitch.isChecked() ? Constants.IBM_DEVICE : "";
-        RandomNumberInput randomNumberInput = new RandomNumberInput(length, api, device);
+        RandomNumberInput randomNumberInput = new RandomNumberInput(length, provider, api, device);
 
         progressBar.setVisibility(View.VISIBLE);
         MainApplication.apiManager.generateRandomNumber(randomNumberInput, new Callback<QuantumRandomNumber>() {

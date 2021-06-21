@@ -1,10 +1,10 @@
 <resources>
     <string name="app_name">Quantum Wheel</string>
     <string name="title">Welcome to Quantum Wheel!</string>
-    <string name="description">Let the nature choose for you - A random slot on the spinning wheel would be selected based on Quantum Superposition properties</string>
+    <string name="description">Let the Nature choose for you - A slot would be selected randomly using the principle of Quantum Superposition.</string>
     <string name="title_activity_main">MainActivity</string>
     <string name="run_on_real_device">Run on Real device?</string>
-    <string name="real_device_notification">Please note that it may take 10-15 mins to get results from a real device due to limited availability</string>
+    <string name="real_device_notification">Please note that it may take 10-15 mins to get results from a real device due to limited availability but it would be truly random.</string>
     <string name="okay">Okay</string>
     <string name="something_wrong_error"> Something went wrong - Nature is playing a game with you</string>
     <string name="enter_text">Enter a number to bet on</string>
@@ -13,7 +13,7 @@
     <string name="add_choice">Add a Choice</string>
     <string name="submit_choices">Submit Choices</string>
     <string name="customize_wheel_title">Customize fortune wheel</string>
-    <string name="customized_wheel_description">Let nature select it for you (For e.g: Should I go for a movie / outing, Which cuisine should I order? Be creative!)</string>
+    <string name="customized_wheel_description">Let the Nature chose it for you (For e.g: Should I go for a movie / outing, Which cuisine should I order? Be creative!)</string>
     <string name="choices_in_range">* Please enter either 2, 4, 8 or 16 choices</string>
     <string name="play">Play</string>
     <string name="customize">Customize</string>
