@@ -4,14 +4,17 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.media.Image;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ProgressBar;
 import android.widget.Switch;
 import android.widget.Toast;
 
+import com.artificialbrain.quantumwheel.BuildConfig;
 import com.artificialbrain.quantumwheel.MainApplication;
 import com.artificialbrain.quantumwheel.models.Choice;
 import com.artificialbrain.quantumwheel.models.QuantumRandomNumber;
@@ -32,13 +35,19 @@ import rubikstudio.library.model.LuckyItem;
 
 public class SpinningWheelActivity extends Activity {
     private List<LuckyItem> data = new ArrayList<>();
+    private List<Integer> wheel_1st_color = Arrays.asList(0, 4, 6, 9, 13, 14);
+    private List<Integer> wheel_2nd_color = Arrays.asList(1, 3, 7, 10, 12);
+    private List<Integer> wheel_3rd_color = Arrays.asList(2, 5, 8, 11, 15);
     private ArrayList<Choice> choiceList = null;
     private boolean customChoices = false;
+
     private ProgressBar progressBar;
     private LuckyWheelView luckyWheelView;
     private EditText numberEditText;
     private Switch realDeviceSwitch;
     private Button playButton;
+    private ImageButton shareButton;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,9 +57,8 @@ public class SpinningWheelActivity extends Activity {
 
         luckyWheelView  = findViewById(R.id.luckyWheel);
 
-        List<Integer> wheel_1st_color = Arrays.asList(0, 4, 6, 9, 13, 14);
-        List<Integer> wheel_2nd_color = Arrays.asList(1, 3, 7, 10, 12);
-        List<Integer> wheel_3rd_color = Arrays.asList(2, 5, 8, 11, 15);
+        shareButton = findViewById(R.id.share_button);
+
 
         if (getIntent().getSerializableExtra("choiceList")!=null) {
             choiceList = (ArrayList<Choice>) getIntent().getExtras().getSerializable("choiceList");
@@ -148,6 +156,12 @@ public class SpinningWheelActivity extends Activity {
         if (customChoices){
             findViewById(R.id.enter_text_layout).setVisibility(View.GONE);
         }
+        shareButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                shareApp();
+            }
+        });
     }
 
     private int getRandomIndex() {
@@ -234,5 +248,14 @@ public class SpinningWheelActivity extends Activity {
                         Toast.LENGTH_LONG).show();
             }
         });
+    }
+
+    private void shareApp(){
+        Intent sendIntent = new Intent();
+        sendIntent.setAction(Intent.ACTION_SEND);
+        sendIntent.putExtra(Intent.EXTRA_TEXT,
+                "Hi, I just now made a choice using Quantum Wheel using the principle of Quantum Superposition. To download the app: https://play.google.com/store/apps/details?id=" + BuildConfig.APPLICATION_ID);
+        sendIntent.setType("text/plain");
+        startActivity(sendIntent);
     }
 }
