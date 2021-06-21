@@ -22,6 +22,7 @@ import com.artificialbrain.quantumwheel.models.RandomNumberInput;
 import com.artificialbrain.quantumwheel.utils.Constants;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
@@ -37,6 +38,10 @@ public class SpinningWheelActivity extends Activity {
     boolean customChoices = false;
 
     private ProgressBar progressBar;
+    private LuckyWheelView luckyWheelView;
+    private EditText numberEditText;
+    private Switch realDeviceSwitch;
+    private Button playButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,7 +49,11 @@ public class SpinningWheelActivity extends Activity {
 
         setContentView(R.layout.spinning_wheel_activity);
 
-        final LuckyWheelView luckyWheelView = findViewById(R.id.luckyWheel);
+        luckyWheelView  = findViewById(R.id.luckyWheel);
+
+        List<Integer> wheel_1st_color = Arrays.asList(0, 3, 6, 9, 12, 15);
+        List<Integer> wheel_2nd_color = Arrays.asList(1, 4, 7, 10, 13);
+        List<Integer> wheel_3rd_color = Arrays.asList(2, 5, 8, 11, 14);
 
         if (getIntent().getSerializableExtra("choiceList")!=null) {
             choiceList = (ArrayList<Choice>) getIntent().getExtras().getSerializable("choiceList");
@@ -52,12 +61,19 @@ public class SpinningWheelActivity extends Activity {
                 LuckyItem luckyItem = new LuckyItem();
                 Choice choice = choiceList.get(i);
                 luckyItem.topText = choice.getChoiceName();
-                luckyItem.color = 0xffFFF3E0;
+                if (wheel_1st_color.contains(i)){
+                    luckyItem.color =  getResources().getColor(R.color.wheel_1st_color);
+                } else if (wheel_2nd_color.contains(i)){
+                    luckyItem.color =  getResources().getColor(R.color.wheel_2nd_color);
+                } else if (wheel_3rd_color.contains(i)){
+                    luckyItem.color =  getResources().getColor(R.color.wheel_3rd_color);
+                }
                 data.add(luckyItem);
                 customChoices = true;
             }
         } else {
             addDefaultItems();
+            customChoices = false;
         }
 
         luckyWheelView.setData(data);
@@ -70,9 +86,9 @@ public class SpinningWheelActivity extends Activity {
 
         progressBar = findViewById(R.id.quantum_progress_bar);
 
-        EditText numberEditText = (EditText) findViewById(R.id.enter_text);
+        numberEditText = (EditText) findViewById(R.id.enter_text);
 
-        Switch realDeviceSwitch = findViewById(R.id.real_device_switch);
+        realDeviceSwitch = findViewById(R.id.real_device_switch);
 
         realDeviceSwitch.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -92,56 +108,19 @@ public class SpinningWheelActivity extends Activity {
                 }
             }
         });
-        Button playButton = findViewById(R.id.play);
+        playButton = findViewById(R.id.play);
         playButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                Toast.makeText(SpinningWheelActivity.this,
-//                        R.string.no_input_to_bet, Toast.LENGTH_LONG).show();
-                if (!customChoices & numberEditText.getText().toString().trim().trim().length() == 0){
+                if (!customChoices && numberEditText.getText().toString().trim().trim().length() == 0){
                     Toast.makeText(SpinningWheelActivity.this,
                             R.string.no_input_to_bet, Toast.LENGTH_LONG).show();
-                    return;
-                }
-
-                int inputNumber = Integer.parseInt(numberEditText.getText().toString().trim());
-
-                if (!(inputNumber > 0 && inputNumber <9))
-                {
+                } else if (!customChoices && !(Integer.parseInt(numberEditText.getText().toString().trim()) > 0
+                        && Integer.parseInt(numberEditText.getText().toString().trim()) <9)) {
                     Toast.makeText(SpinningWheelActivity.this,R.string.input_not_in_range, Toast.LENGTH_LONG).show();
-                    return;
+                } else {
+                    callRandomNumberAPI();
                 }
-
-                playButton.setEnabled(false);
-                int length = (int)(Math.log(data.size()) / Math.log(2));
-                String api = realDeviceSwitch.isChecked() ? Constants.API : "";
-                String device = realDeviceSwitch.isChecked() ? Constants.IBM_DEVICE : "";
-                RandomNumberInput randomNumberInput = new RandomNumberInput(length, api, device);
-
-                progressBar.setVisibility(View.VISIBLE);
-                MainApplication.apiManager.generateRandomNumber(randomNumberInput, new Callback<QuantumRandomNumber>() {
-                    @Override
-                    public void onResponse(Call<QuantumRandomNumber> call, Response<QuantumRandomNumber> response) {
-                        playButton.setEnabled(true);
-                        progressBar.setVisibility(View.GONE);
-                        QuantumRandomNumber quantumRandomNumber = response.body();
-                        if (quantumRandomNumber != null) {
-                            luckyWheelView.startLuckyWheelWithTargetIndex
-                                    (Integer.parseInt(quantumRandomNumber.getQuantum_random_num()));
-                        } else {
-                            Toast.makeText(SpinningWheelActivity.this, R.string.something_wrong_error, Toast.LENGTH_LONG).show();
-                        }
-                    }
-
-                    @Override
-                    public void onFailure(Call<QuantumRandomNumber> call, Throwable t) {
-                        playButton.setEnabled(true);
-                        progressBar.setVisibility(View.GONE);
-                        Toast.makeText(SpinningWheelActivity.this,
-                                "Error is " + t.getMessage(),
-                                Toast.LENGTH_LONG).show();
-                    }
-                });
             }
         });
 
@@ -150,7 +129,7 @@ public class SpinningWheelActivity extends Activity {
             public void LuckyRoundItemSelected(int index) {
                 String result;
                 if (customChoices){
-                    result = data.get(index).topText;
+                    result = data.get(index).topText + " is chosen by Nature for you!";
                 } else {
                     result = numberEditText.getText().toString().equals(data.get(index).topText)
                             ? getResources().getString(R.string.won_message) :
@@ -188,42 +167,75 @@ public class SpinningWheelActivity extends Activity {
     private void addDefaultItems() {
         LuckyItem luckyItem1 = new LuckyItem();
         luckyItem1.topText = "1";
-        luckyItem1.color = 0xffFFF3E0;
+        luckyItem1.color = getResources().getColor(R.color.wheel_1st_color);
         data.add(luckyItem1);
 
         LuckyItem luckyItem2 = new LuckyItem();
         luckyItem2.topText = "2";
-        luckyItem2.color = 0xffFFE0B2;
+        luckyItem2.color = getResources().getColor(R.color.wheel_2nd_color);
         data.add(luckyItem2);
 
         LuckyItem luckyItem3 = new LuckyItem();
         luckyItem3.topText = "3";
-        luckyItem3.color = 0xffFFCC80;
+        luckyItem3.color = getResources().getColor(R.color.wheel_3rd_color);
         data.add(luckyItem3);
 
         LuckyItem luckyItem4 = new LuckyItem();
         luckyItem4.topText = "4";
-        luckyItem4.color = 0xffFFF3E0;
+        luckyItem4.color = getResources().getColor(R.color.wheel_1st_color);
         data.add(luckyItem4);
 
         LuckyItem luckyItem5 = new LuckyItem();
         luckyItem5.topText = "5";
-        luckyItem5.color = 0xffFFE0B2;
+        luckyItem5.color = getResources().getColor(R.color.wheel_2nd_color);
         data.add(luckyItem5);
 
         LuckyItem luckyItem6 = new LuckyItem();
         luckyItem6.topText = "6";
-        luckyItem6.color = 0xffFFCC80;
+        luckyItem6.color = getResources().getColor(R.color.wheel_3rd_color);
         data.add(luckyItem6);
 
         LuckyItem luckyItem7 = new LuckyItem();
         luckyItem7.topText = "7";
-        luckyItem7.color = 0xffFFF3E0;
+        luckyItem7.color = getResources().getColor(R.color.wheel_1st_color);
         data.add(luckyItem7);
 
         LuckyItem luckyItem8 = new LuckyItem();
         luckyItem8.topText = "8";
-        luckyItem8.color = 0xffFFE0B2;
+        luckyItem8.color = getResources().getColor(R.color.wheel_2nd_color);
         data.add(luckyItem8);
+    }
+
+    private void callRandomNumberAPI() {
+        playButton.setEnabled(false);
+        int length = (int)(Math.log(data.size()) / Math.log(2));
+        String api = realDeviceSwitch.isChecked() ? Constants.API : "";
+        String device = realDeviceSwitch.isChecked() ? Constants.IBM_DEVICE : "";
+        RandomNumberInput randomNumberInput = new RandomNumberInput(length, api, device);
+
+        progressBar.setVisibility(View.VISIBLE);
+        MainApplication.apiManager.generateRandomNumber(randomNumberInput, new Callback<QuantumRandomNumber>() {
+            @Override
+            public void onResponse(Call<QuantumRandomNumber> call, Response<QuantumRandomNumber> response) {
+                playButton.setEnabled(true);
+                progressBar.setVisibility(View.GONE);
+                QuantumRandomNumber quantumRandomNumber = response.body();
+                if (quantumRandomNumber != null) {
+                    luckyWheelView.startLuckyWheelWithTargetIndex
+                            (Integer.parseInt(quantumRandomNumber.getQuantum_random_num()));
+                } else {
+                    Toast.makeText(SpinningWheelActivity.this, R.string.something_wrong_error, Toast.LENGTH_LONG).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<QuantumRandomNumber> call, Throwable t) {
+                playButton.setEnabled(true);
+                progressBar.setVisibility(View.GONE);
+                Toast.makeText(SpinningWheelActivity.this,
+                        "Error is " + t.getMessage(),
+                        Toast.LENGTH_LONG).show();
+            }
+        });
     }
 }
