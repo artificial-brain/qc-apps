@@ -5,11 +5,9 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.text.Layout;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.Switch;
 import android.widget.Toast;
@@ -33,10 +31,9 @@ import rubikstudio.library.LuckyWheelView;
 import rubikstudio.library.model.LuckyItem;
 
 public class SpinningWheelActivity extends Activity {
-    List<LuckyItem> data = new ArrayList<>();
-    ArrayList<Choice> choiceList = null;
-    boolean customChoices = false;
-
+    private List<LuckyItem> data = new ArrayList<>();
+    private ArrayList<Choice> choiceList = null;
+    private boolean customChoices = false;
     private ProgressBar progressBar;
     private LuckyWheelView luckyWheelView;
     private EditText numberEditText;
@@ -51,9 +48,9 @@ public class SpinningWheelActivity extends Activity {
 
         luckyWheelView  = findViewById(R.id.luckyWheel);
 
-        List<Integer> wheel_1st_color = Arrays.asList(0, 3, 6, 9, 12, 15);
-        List<Integer> wheel_2nd_color = Arrays.asList(1, 4, 7, 10, 13);
-        List<Integer> wheel_3rd_color = Arrays.asList(2, 5, 8, 11, 14);
+        List<Integer> wheel_1st_color = Arrays.asList(0, 4, 6, 9, 13, 14);
+        List<Integer> wheel_2nd_color = Arrays.asList(1, 3, 7, 10, 12);
+        List<Integer> wheel_3rd_color = Arrays.asList(2, 5, 8, 11, 15);
 
         if (getIntent().getSerializableExtra("choiceList")!=null) {
             choiceList = (ArrayList<Choice>) getIntent().getExtras().getSerializable("choiceList");

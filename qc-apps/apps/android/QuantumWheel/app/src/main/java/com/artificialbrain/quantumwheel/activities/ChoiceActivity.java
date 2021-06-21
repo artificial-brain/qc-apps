@@ -60,6 +60,7 @@ public class ChoiceActivity extends Activity implements View.OnClickListener {
                     intent.putExtras(bundle);
                     intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
                     startActivity(intent);
+                    finish();
                 }
                 break;
         }

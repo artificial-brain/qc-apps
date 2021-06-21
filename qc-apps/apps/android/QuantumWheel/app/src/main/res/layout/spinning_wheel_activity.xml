@@ -9,6 +9,7 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
+    android:background="@android:color/white"
     tools:context="com.artificialbrain.quantumwheel.activities.SpinningWheelActivity">
 
     <TextView
@@ -19,7 +20,7 @@
         android:textColor="@color/mainColor"
         android:textStyle="bold"
         android:paddingTop="20sp"
-        />
+        android:textSize="@dimen/text_size" />
 
     <TextView
         android:id="@+id/description_text"
@@ -27,8 +28,8 @@
         android:layout_height="wrap_content"
         android:text="@string/description"
         android:textStyle="bold"
-        android:layout_below="@id/title_text"
-        />
+        android:textSize="@dimen/text_size"
+        android:layout_below="@id/title_text" />
 
     <Switch
         android:id="@+id/real_device_switch"
@@ -52,14 +53,13 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/enter_text"
-            android:textSize="15sp"
-            />
+            android:textSize="@dimen/text_size" />
 
         <EditText
             android:id="@+id/enter_text"
             android:layout_width="50dp"
             android:inputType="number"
-            android:textSize="15sp"
+            android:textSize="@dimen/text_size"
             android:layout_marginLeft="5dp"
             android:layout_height="wrap_content"/>
 
@@ -95,23 +95,23 @@
         android:layout_centerHorizontal="true">
         <Button
             android:id="@+id/play"
-            android:textSize="20sp"
+            android:textSize="@dimen/text_size"
             android:textColor="@android:color/white"
             android:text="@string/play"
             android:textStyle="bold"
             android:background="@color/mainColor"
             android:layout_width="150dp"
-            android:layout_height="50dp"
+            android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/top_margin" />
         <Button
             android:id="@+id/customize_button"
-            android:textSize="20sp"
+            android:textSize="@dimen/text_size"
             android:textColor="@android:color/white"
             android:text="@string/customize"
             android:textStyle="bold"
             android:background="@color/mainColor"
             android:layout_width="150dp"
-            android:layout_height="50dp"
+            android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
             android:layout_marginTop="@dimen/top_margin" />
     </LinearLayout>
@@ -123,7 +123,7 @@
         android:src="@drawable/share"
         android:adjustViewBounds="true"
         android:layout_centerHorizontal="true"
-        android:background="@android:color/background_light"
+        android:background="@android:color/white"
         android:layout_below="@+id/play_button_layout"
         android:layout_marginTop="@dimen/top_margin"
         android:scaleType="fitCenter" />
