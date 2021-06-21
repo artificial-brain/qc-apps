@@ -1,5 +1,6 @@
 package com.artificialbrain.quantumwheel.api;
 
+import com.artificialbrain.quantumwheel.BuildConfig;
 import com.artificialbrain.quantumwheel.models.QuantumRandomNumber;
 import com.artificialbrain.quantumwheel.models.RandomNumberInput;
 import com.artificialbrain.quantumwheel.utils.Constants;
@@ -19,18 +20,19 @@ public class ApiManager {
 
     private ApiManager() {
 
-        HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
-        interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
-        OkHttpClient client = new OkHttpClient.Builder()
-                .addInterceptor(interceptor)
-                .readTimeout(20, TimeUnit.MINUTES)
-                .connectTimeout(20, TimeUnit.MINUTES)
-                .build();
+        HttpLoggingInterceptor loggingInterceptor = new HttpLoggingInterceptor();
+        loggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
+        OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
+        httpClient.readTimeout(20, TimeUnit.MINUTES);
+        httpClient.connectTimeout(20, TimeUnit.MINUTES);
+        if (BuildConfig.DEBUG) {
+            httpClient.addInterceptor(loggingInterceptor);
+        }
 
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(Constants.base_url)
                 .addConverterFactory(GsonConverterFactory.create())
-                .client(client)
+                .client(httpClient.build())
                 .build();
 
         service = retrofit.create(RandomNumberAPI.class);
