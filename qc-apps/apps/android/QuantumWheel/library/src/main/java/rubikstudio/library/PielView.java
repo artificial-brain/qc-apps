@@ -4,6 +4,7 @@ import android.animation.Animator;
 import android.animation.TimeInterpolator;
 import android.annotation.TargetApi;
 import android.content.Context;
+import android.content.res.AssetFileDescriptor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
@@ -13,6 +14,7 @@ import android.graphics.Rect;
 import android.graphics.RectF;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
+import android.media.MediaPlayer;
 import android.os.Build;
 import android.text.TextPaint;
 import android.text.TextUtils;
@@ -23,6 +25,7 @@ import android.view.View;
 import android.view.animation.AccelerateInterpolator;
 import android.view.animation.DecelerateInterpolator;
 import android.view.animation.LinearInterpolator;
+import android.widget.Toast;
 
 import java.util.List;
 import java.util.Random;
@@ -64,6 +67,8 @@ public class PielView extends View {
     double fingerRotation;
     long downPressTime, upPressTime;
     double newRotationStore[] = new double[3];
+    private Context context;
+    private String mWheelInput;
 
 
     private List<LuckyItem> mLuckyItemList;
@@ -76,10 +81,12 @@ public class PielView extends View {
 
     public PielView(Context context) {
         super(context);
+        this.context = context;
     }
 
     public PielView(Context context, AttributeSet attrs) {
         super(context, attrs);
+        this.context = context;
     }
 
     public void setPieRotateListener(PieRotateListener listener) {
@@ -134,6 +141,11 @@ public class PielView extends View {
 
     public void setTopTextSize(int size) {
         mTopTextSize = size;
+        invalidate();
+    }
+
+    public void setWheelInput(String wheelInput) {
+        mWheelInput = wheelInput;
         invalidate();
     }
 
@@ -282,14 +294,23 @@ public class PielView extends View {
 
         Typeface typeface = Typeface.create(Typeface.SANS_SERIF, Typeface.NORMAL);
         mTextPaint.setTypeface(typeface);
-        mTextPaint.setTextAlign(Paint.Align.LEFT);
+        mTextPaint.setTextAlign(Paint.Align.CENTER);
         mTextPaint.setTextSize(mTopTextSize);
         float textWidth = mTextPaint.measureText(mStr);
         int hOffset = (int) (mRadius * Math.PI / mLuckyItemList.size() / 2 - textWidth / 2);
 
         int vOffset = mTopTextPadding;
 
-        canvas.drawTextOnPath(mStr, path, hOffset, vOffset, mTextPaint);
+        canvas.rotate(90);
+        canvas.translate(50f,0);
+
+        int x = canvas.getWidth()/2;
+        int y = canvas.getHeight()/2;
+        canvas.drawTextOnPath(mStr, path, x, y, mTextPaint);
+        canvas.rotate(90);
+        canvas.translate(-50f,0);
+//        canvas.translate(-50f,0);
+//        canvas.rotate(-(tmpAngle+ sweepAngle/2),  hOffset, vOffset);
     }
 
 
@@ -406,8 +427,10 @@ public class PielView extends View {
         // This addition of another round count for counterclockwise is to simulate the perception of the same number of spin
         // if you still need to reach the same outcome of a positive degrees rotation with the number of rounds reversed.
         if (rotationAssess < 0) mRoundOfNumber++;
-
-        float targetAngle = ((360f * mRoundOfNumber * rotationAssess) + 270f - getAngleOfIndexTarget(index) - (360f / mLuckyItemList.size()) / 2);
+        int min = 1;
+        int max = 360;
+        int random_angle = (int) Math.floor(Math.random() * (max - min + 1) + min);
+        float targetAngle = ((360f * mRoundOfNumber * rotationAssess) + 270f - getAngleOfIndexTarget(index) - (random_angle / mLuckyItemList.size()) / 2);
         animate()
                 .setInterpolator(new DecelerateInterpolator())
                 .setDuration(mRoundOfNumber * 1000 + 900L)
@@ -415,6 +438,7 @@ public class PielView extends View {
                     @Override
                     public void onAnimationStart(Animator animation) {
                         isRunning = true;
+                        playAssetSound();
                     }
 
                     @Override
@@ -541,6 +565,20 @@ public class PielView extends View {
     private int getFallBackRandomIndex() {
         Random rand = new Random();
         return rand.nextInt(mLuckyItemList.size() - 1) + 0;
+    }
+
+    private void playAssetSound() {
+        try {
+            String assetName = "slot_machine_jackpot.wav";
+            AssetFileDescriptor afd = context.getAssets().openFd(assetName);
+            MediaPlayer mMediaPlayer = new MediaPlayer();
+            mMediaPlayer.setDataSource(afd.getFileDescriptor(), afd.getStartOffset(), afd.getLength());
+            afd.close();
+            mMediaPlayer.prepare();
+            mMediaPlayer.start();
+        } catch (Exception ex) {
+            Toast.makeText(context, "Excpet" + ex.getMessage(), Toast.LENGTH_LONG).show();
+        }
     }
 
     /**

@@ -2,8 +2,6 @@ package com.artificialbrain.quantumwheel.activities;
 
 import android.app.Activity;
 
-import androidx.appcompat.widget.AppCompatSpinner;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;

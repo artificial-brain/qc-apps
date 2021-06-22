@@ -12,4 +12,8 @@
     <item name="image_remove" type="id"/>
     <item name="play_button_layout" type="id"/>
     <item name="customize_button" type="id"/>
+    <item name="launcher_title" type="id"/>
+    <item name="launcher_description" type="id"/>
+    <item name="launcher_examples" type="id"/>
+    <item name="launcher_button" type="id"/>
 </resources>

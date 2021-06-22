@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorPrimary">
+
+    <RelativeLayout
+        android:id="@+id/relative"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <Button
+            android:id="@+id/spin_btn"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="210dp"
+            android:background="@drawable/ic_replay"
+            android:text="" />
+
+        <TextView
+            android:id="@+id/current_roulette_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="490dp"
+            android:shadowColor="#000000"
+            android:shadowDx="1"
+            android:shadowDy="5"
+            android:shadowRadius="10"
+            android:text="Title"
+            android:textColor="#ffffff"
+            android:textSize="35dp"
+            android:textStyle="bold" />
+
+        <ImageView
+            android:id="@+id/ic_wheel"
+            android:layout_width="400dp"
+            android:layout_height="400dp"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="60dp"
+            android:scaleType="centerInside"
+            android:src="@drawable/start_roll" />
+
+        <ImageView
+            android:id="@+id/ic_pointer"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="415dp"
+            android:scaleType="centerInside"
+            app:srcCompat="@drawable/pointer" />
+
+    </RelativeLayout>
+
+    <ImageView
+        android:id="@+id/panel"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignTop="@+id/relative"
+        android:background="@drawable/panel"
+        android:visibility="gone" />
+
+    <TextView
+        android:id="@+id/current_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/panel"
+        android:layout_centerInParent="true"
+        android:layout_marginTop="250dp"
+        android:shadowColor="#000000"
+        android:shadowDx="1"
+        android:shadowDy="5"
+        android:shadowRadius="10"
+        android:text=""
+        android:textColor="#ffffff"
+        android:textSize="40dp"
+        android:textStyle="bold" />
+</RelativeLayout>

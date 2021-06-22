@@ -5,4 +5,5 @@
     <dimen name="fab_margin">16dp</dimen>
     <dimen name="top_margin">20dp</dimen>
     <dimen name="text_size">15sp</dimen>
+    <dimen name="title_size">25sp</dimen>
 </resources>

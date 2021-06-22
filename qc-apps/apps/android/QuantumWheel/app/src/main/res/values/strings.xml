@@ -19,4 +19,9 @@
     <string name="customize">Customize</string>
     <string name="no_input_to_bet">Please enter a number to bet on </string>
     <string name="input_not_in_range">Please enter input between 1 to 8</string>
+    <string name="launcher_title">Let nature decide for you!</string>
+    <string name="launcher_description">A slot on the spinning wheel is selected based on
+        the principle of Quantum Superposition which purely is random in nature.</string>
+    <string name="launcher_examples">Which classic hollywood movie to watch? Should I have Chinese or Indian cuisine today? Let nature decide it for you!</string>
+    <string name="launcher_button">Let\'s Spin</string>
 </resources>

@@ -177,12 +177,12 @@ public class SpinningWheelActivity extends Activity {
 
     private void addDefaultItems() {
         LuckyItem luckyItem1 = new LuckyItem();
-        luckyItem1.topText = "1";
+        luckyItem1.topText = "The Shawshank Redemption";
         luckyItem1.color = getResources().getColor(R.color.wheel_1st_color);
         data.add(luckyItem1);
 
         LuckyItem luckyItem2 = new LuckyItem();
-        luckyItem2.topText = "2";
+        luckyItem2.topText = "The Lord of the Rings: \n The Return of the King";
         luckyItem2.color = getResources().getColor(R.color.wheel_2nd_color);
         data.add(luckyItem2);
 
