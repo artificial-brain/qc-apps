@@ -15,7 +15,7 @@ import com.artificial.brain.quantumwheel.adapter.CustomAdapter;
 public class MainController extends AppCompatActivity {
     GridView mGridView;
     int[] rouletteImg = {R.drawable.heads_tails, R.drawable.yes_no, R.drawable.rock_paper, R.drawable.die, R.drawable.loves_me, R.drawable.casino, R.drawable.color, R.drawable.fast_food, R.drawable.lie_detector, R.drawable.freetime_activity, R.drawable.days, R.drawable.countries, R.drawable.zodiac, R.drawable.luck};
-    String[] rouletteTitle = {"Heads/Tails", "Yes/No", "Rock-Paper-Scissors", "Roll the die", "Loves me?", "Casino", "Lucky Color", "What to eat", "Lie Detector", "Freetime Activity", "Pick a day", "Where to go on Holidays?", "Zodiac Sign for You", "Lucky or Unlucky"};
+    String[] rouletteTitle = {"Heads/Tails", "Yes/No", "Rock-Paper-Scissors", "Roll the dice", "Loves me?", "Casino", "Lucky Color", "What to eat", "Lie Detector", "Freetime Activity", "Pick a day", "Where to go on Holidays?", "Zodiac Sign for You", "Lucky or Unlucky"};
 
     @Override
     protected void onCreate(Bundle bundle) {

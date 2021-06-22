@@ -53,16 +53,16 @@ public class Splash extends AppCompatActivity {
         mShare.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
-                String string = getString(R.string.app_name);
+                String appName = getString(R.string.app_name);
                 try {
                     Intent intent = new Intent();
                     intent.setAction("android.intent.action.SEND");
                     intent.setType("text/plain");
-                    String sb = string +
+                    String sb = appName +
                             "-\n" +
                             "https://play.google.com/store/apps/details?id=" + getPackageName();
                     intent.putExtra("android.intent.extra.TEXT", sb);
-                    startActivity(Intent.createChooser(intent, "Share App : Decision Roullate"));
+                    startActivity(Intent.createChooser(intent, "Share App : " +appName));
                 } catch (Exception unused) {
                 }
             }

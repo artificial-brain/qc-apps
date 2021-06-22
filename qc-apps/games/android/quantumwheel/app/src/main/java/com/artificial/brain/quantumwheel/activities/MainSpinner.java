@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.content.res.AssetFileDescriptor;
 import android.media.MediaPlayer;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.animation.Animation;
@@ -24,6 +25,7 @@ import com.artificial.brain.quantumwheel.models.RandomNumberInput;
 import com.artificial.brain.quantumwheel.utils.Constants;
 
 import java.io.PrintStream;
+import java.util.ArrayList;
 import java.util.Random;
 
 import retrofit2.Call;
@@ -42,7 +44,9 @@ public class MainSpinner extends AppCompatActivity {
     String name;
     int pos;
     private MediaPlayer mMediaPlayer = new MediaPlayer();
-
+    private Handler handler = new Handler();
+    private int slotCounter = 0;
+    ArrayList<String> slots = new ArrayList<String>();
 
 
     @Override
@@ -51,6 +55,7 @@ public class MainSpinner extends AppCompatActivity {
         requestWindowFeature(1);
         getWindow().setFlags(1024, 1024);
         setContentView(R.layout.activity_main_spin);
+
         mSpinBtn = findViewById(R.id.spin_btn);
         mRouletteResult = findViewById(R.id.current_text);
         mSelectedRouletteImg = findViewById(R.id.ic_wheel);
@@ -115,6 +120,19 @@ public class MainSpinner extends AppCompatActivity {
         rotateAnimation.setDuration(3600);
         rotateAnimation.setFillAfter(true);
         rotateAnimation.setInterpolator(new DecelerateInterpolator());
+
+        Runnable myRunnable = new Runnable() {
+            @Override
+            public void run() {
+                mRouletteResult.setText(slots.get(slotCounter));
+                System.out.println("slotCounter$$$$$: " + slotCounter);
+                slotCounter++;
+                if(slotCounter == slots.size()){
+                    slotCounter = 0;
+                }
+                handler.postDelayed(this, 100);
+            }
+        };
         rotateAnimation.setAnimationListener(new AnimationListener() {
             @Override
             public void onAnimationRepeat(Animation animation) {
@@ -126,6 +144,8 @@ public class MainSpinner extends AppCompatActivity {
                 mSpinBtn.setClickable(false);
                 mPanel.setVisibility(View.GONE);
                 playAssetSound();
+                handler.postDelayed(myRunnable, 100);
+                createSlotArray();
             }
 
             @Override
@@ -133,6 +153,7 @@ public class MainSpinner extends AppCompatActivity {
                 PrintStream printStream = System.out;
                 printStream.println("*******" + pos);
                 mMediaPlayer.reset();
+                handler.removeCallbacks(myRunnable);
                 switch (pos) {
                     case 0:
                         MainSpinner.FACTOR = 22.5f;
@@ -604,7 +625,7 @@ public class MainSpinner extends AppCompatActivity {
         }
         float f10 = FACTOR;
         if (f >= 17.0f * f10 && f <= f10 * 19.0f) {
-            str = "Chicken Biryani";
+            str = "Donut";
         }
         float f11 = FACTOR;
         if (f >= 19.0f * f11 && f <= f11 * 21.0f) {
@@ -852,5 +873,65 @@ public class MainSpinner extends AppCompatActivity {
             str2 = str;
         }
         return ((f < FACTOR * 11.0f || i >= 360) && (i < 0 || f > FACTOR * 1.0f)) ? str2 : str3;
+    }
+
+    private void createSlotArray(){
+        slots.clear();
+        if (pos == 0) {
+            slots.add("Heads");
+            slots.add("Tails");
+        }else if (pos == 1) {
+            slots.add("Yes");
+            slots.add("No");
+        }else if (pos == 2) {
+            slots.add("Rock");
+            slots.add("Paper");
+            slots.add("Scissors");
+        }else if (pos == 3) {
+            slots.add("1");
+            slots.add("2");
+            slots.add("3");
+            slots.add("4");
+            slots.add("5");
+            slots.add("6");
+        }else if (pos == 4) {
+            slots.add("Loves me");
+            slots.add("Loves me not");
+        }else if (pos == 5) {
+            slots.add("0");
+            slots.add("1");
+            slots.add("2");
+            slots.add("3");
+            slots.add("4");
+            slots.add("5");
+            slots.add("6");
+            slots.add("7");
+            slots.add("8");
+            slots.add("9");
+            slots.add("10");
+            slots.add("11");
+            slots.add("12");
+            slots.add("20");
+            slots.add("21");
+            slots.add("22");
+            slots.add("30");
+            slots.add("31");
+            slots.add("32");
+            slots.add("33");
+            slots.add("35");
+            slots.add("36");
+        } else if (pos == 6) {
+            slots.add("Black");
+            slots.add("White");
+            slots.add("Yellow");
+            slots.add("Orange");
+            slots.add("Yellow");
+        }
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        mMediaPlayer.reset();
     }
 }

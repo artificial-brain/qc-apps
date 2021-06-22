@@ -5,6 +5,7 @@
     android:layout_height="match_parent"
     android:background="@color/colorPrimary">
 
+
     <RelativeLayout
         android:id="@+id/relative"
         android:layout_width="match_parent"
@@ -72,7 +73,7 @@
         android:layout_height="wrap_content"
         android:layout_alignTop="@+id/panel"
         android:layout_centerInParent="true"
-        android:layout_marginTop="250dp"
+        android:layout_marginTop="220dp"
         android:shadowColor="#000000"
         android:shadowDx="1"
         android:shadowDy="5"
