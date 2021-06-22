@@ -1,4 +1,4 @@
-package com.artificial.brain.quantumwheel;
+package com.artificial.brain.quantumwheel.activities;
 
 import android.content.ActivityNotFoundException;
 import android.content.DialogInterface;
@@ -16,6 +16,8 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.artificial.brain.quantumwheel.R;
 
 import java.io.PrintStream;
 

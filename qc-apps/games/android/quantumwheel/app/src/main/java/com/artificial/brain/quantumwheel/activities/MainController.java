@@ -1,4 +1,4 @@
-package com.artificial.brain.quantumwheel;
+package com.artificial.brain.quantumwheel.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -9,7 +9,7 @@ import android.widget.GridView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.artificial.brain.quantumwheel.MainSpinner;
+import com.artificial.brain.quantumwheel.R;
 import com.artificial.brain.quantumwheel.adapter.CustomAdapter;
 
 public class MainController extends AppCompatActivity {

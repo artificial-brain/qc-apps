@@ -1,6 +1,8 @@
-package com.artificial.brain.quantumwheel;
+package com.artificial.brain.quantumwheel.activities;
 
 import android.content.Intent;
+import android.content.res.AssetFileDescriptor;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -15,8 +17,18 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.artificial.brain.quantumwheel.MainApplication;
+import com.artificial.brain.quantumwheel.R;
+import com.artificial.brain.quantumwheel.models.QuantumRandomNumber;
+import com.artificial.brain.quantumwheel.models.RandomNumberInput;
+import com.artificial.brain.quantumwheel.utils.Constants;
+
 import java.io.PrintStream;
 import java.util.Random;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class MainSpinner extends AppCompatActivity {
     private static float FACTOR;
@@ -29,7 +41,8 @@ public class MainSpinner extends AppCompatActivity {
     Button mSpinBtn;
     String name;
     int pos;
-    Random rand;
+    private MediaPlayer mMediaPlayer = new MediaPlayer();
+
 
 
     @Override
@@ -46,113 +59,42 @@ public class MainSpinner extends AppCompatActivity {
         Intent intent = getIntent();
         mSelectedRouletteImg.setImageResource(intent.getIntExtra("image", 0));
         pos = intent.getIntExtra("position", 0);
-        rand = new Random();
         mCurrentRouletteTitle.setText(name);
         mSpinBtn.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
+                mPanel.setVisibility(View.VISIBLE);
                 MainSpinner mainSpinner = MainSpinner.this;
                 mainSpinner.degree_old = mainSpinner.degree % 360;
                 MainSpinner mainSpinner2 = MainSpinner.this;
-                mainSpinner2.degree = mainSpinner2.rand.nextInt(4097);
-//                mainSpinner2.degree = mainSpinner2.rand.nextInt(3600) + 720;
-                Toast.makeText(MainSpinner.this, ""+mainSpinner2.degree, Toast.LENGTH_LONG).show();
-                RotateAnimation rotateAnimation = new RotateAnimation((float) degree_old, (float) degree, 1, 0.5f, 1, 0.5f);
-                rotateAnimation.setDuration(3600);
-                rotateAnimation.setFillAfter(true);
-                rotateAnimation.setInterpolator(new DecelerateInterpolator());
-                rotateAnimation.setAnimationListener(new AnimationListener() {
+                int length = 12;
+                String provider = false ?
+                        Constants.IBM_PROVIDER : Constants.GOOGLE_PROVIDER;
+                String api = false ? Constants.API : "";
+                String device = false ? Constants.IBM_DEVICE : "";
+                RandomNumberInput randomNumberInput = new RandomNumberInput(length, provider, api, device);
+                MainApplication.apiManager.generateRandomNumber(randomNumberInput, new Callback<QuantumRandomNumber>() {
                     @Override
-                    public void onAnimationRepeat(Animation animation) {
-                    }
-
-                    @Override
-                    public void onAnimationStart(Animation animation) {
-                        mSpinBtn.setAlpha(0.95f);
-                        mSpinBtn.setClickable(false);
-                    }
-
-                    @Override
-                    public void onAnimationEnd(Animation animation) {
-                        PrintStream printStream = System.out;
-                        printStream.println("*******" + pos);
-                        switch (pos) {
-                            case 0:
-                                MainSpinner.FACTOR = 22.5f;
-                                mRouletteResult.setText(currentNumber(360 - (degree % 360)));
-                                mPanel.setVisibility(View.VISIBLE);
-                                return;
-                            case 1:
-                                MainSpinner.FACTOR = 30.0f;
-                                mRouletteResult.setText(currentNumber1(360 - (degree % 360)));
-                                mPanel.setVisibility(View.VISIBLE);
-                                return;
-                            case 2:
-                                MainSpinner.FACTOR = 20.0f;
-                                mRouletteResult.setText(currentNumber2(360 - (degree % 360)));
-                                mPanel.setVisibility(View.VISIBLE);
-                                return;
-                            case 3:
-                                MainSpinner.FACTOR = 30.0f;
-                                mRouletteResult.setText(currentNumber3(360 - (degree % 360)));
-                                mPanel.setVisibility(View.VISIBLE);
-                                return;
-                            case 4:
-                                MainSpinner.FACTOR = 22.5f;
-                                mRouletteResult.setText(currentNumber4(360 - (degree % 360)));
-                                mPanel.setVisibility(View.VISIBLE);
-                                return;
-                            case 5:
-                                MainSpinner.FACTOR = 4.86f;
-                                mRouletteResult.setText(currentNumber5(360 - (degree % 360)));
-                                mPanel.setVisibility(View.VISIBLE);
-                                return;
-                            case 6:
-                                MainSpinner.FACTOR = 15.0f;
-                                mRouletteResult.setText(currentNumber6(360 - (degree % 360)));
-                                mPanel.setVisibility(View.VISIBLE);
-                                return;
-                            case 7:
-                                MainSpinner.FACTOR = 15.0f;
-                                mRouletteResult.setText(currentNumber7(360 - (degree % 360)));
-                                mPanel.setVisibility(View.VISIBLE);
-                                return;
-                            case 8:
-                                MainSpinner.FACTOR = 18.0f;
-                                mRouletteResult.setText(currentNumber8(360 - (degree % 360)));
-                                mPanel.setVisibility(View.VISIBLE);
-                                return;
-                            case 9:
-                                MainSpinner.FACTOR = 15.0f;
-                                mRouletteResult.setText(currentNumber9(360 - (degree % 360)));
-                                mPanel.setVisibility(View.VISIBLE);
-                                return;
-                            case 10:
-                                MainSpinner.FACTOR = 25.7f;
-                                mRouletteResult.setText(currentNumber10(360 - (degree % 360)));
-                                mPanel.setVisibility(View.VISIBLE);
-                                return;
-                            case 11:
-                                MainSpinner.FACTOR = 15.0f;
-                                mRouletteResult.setText(currentNumber11(360 - (degree % 360)));
-                                mPanel.setVisibility(View.VISIBLE);
-                                return;
-                            case 12:
-                                MainSpinner.FACTOR = 15.0f;
-                                mRouletteResult.setText(currentNumber12(360 - (degree % 360)));
-                                mPanel.setVisibility(View.VISIBLE);
-                                return;
-                            case 13:
-                                MainSpinner.FACTOR = 30.0f;
-                                mRouletteResult.setText(currentNumber13(360 - (degree % 360)));
-                                mPanel.setVisibility(View.VISIBLE);
-                                return;
-                            default:
-                                return;
+                    public void onResponse(Call<QuantumRandomNumber> call,
+                                           Response<QuantumRandomNumber> response) {
+                        QuantumRandomNumber quantumRandomNumber = response.body();
+                        mPanel.setVisibility(View.VISIBLE);
+                        if (quantumRandomNumber != null) {
+                            mainSpinner2.degree = quantumRandomNumber.getQuantum_random_num();
+                            spin(mainSpinner2);
+                        } else {
+                            Toast.makeText(MainSpinner.this, R.string.something_wrong_error,
+                                    Toast.LENGTH_LONG).show();
                         }
                     }
+
+                    @Override
+                    public void onFailure(Call<QuantumRandomNumber> call, Throwable t) {
+                        mPanel.setVisibility(View.VISIBLE);
+                        Toast.makeText(MainSpinner.this, R.string.something_wrong_error,
+                                Toast.LENGTH_LONG).show();
+                    }
                 });
-                mSelectedRouletteImg.startAnimation(rotateAnimation);
             }
         });
         mPanel.setOnClickListener(new OnClickListener() {
@@ -164,6 +106,122 @@ public class MainSpinner extends AppCompatActivity {
                 mSpinBtn.setClickable(true);
             }
         });
+    }
+
+    private void spin(MainSpinner mainSpinner2){
+//      mainSpinner2.degree = mainSpinner2.rand.nextInt(3600) + 720;
+        RotateAnimation rotateAnimation = new RotateAnimation((float) degree_old,
+                (float) degree, 1, 0.5f, 1, 0.5f);
+        rotateAnimation.setDuration(3600);
+        rotateAnimation.setFillAfter(true);
+        rotateAnimation.setInterpolator(new DecelerateInterpolator());
+        rotateAnimation.setAnimationListener(new AnimationListener() {
+            @Override
+            public void onAnimationRepeat(Animation animation) {
+            }
+
+            @Override
+            public void onAnimationStart(Animation animation) {
+                mSpinBtn.setAlpha(0.95f);
+                mSpinBtn.setClickable(false);
+                mPanel.setVisibility(View.GONE);
+                playAssetSound();
+            }
+
+            @Override
+            public void onAnimationEnd(Animation animation) {
+                PrintStream printStream = System.out;
+                printStream.println("*******" + pos);
+                mMediaPlayer.reset();
+                switch (pos) {
+                    case 0:
+                        MainSpinner.FACTOR = 22.5f;
+                        mRouletteResult.setText(currentNumber(360 - (degree % 360)));
+                        mPanel.setVisibility(View.VISIBLE);
+                        return;
+                    case 1:
+                        MainSpinner.FACTOR = 30.0f;
+                        mRouletteResult.setText(currentNumber1(360 - (degree % 360)));
+                        mPanel.setVisibility(View.VISIBLE);
+                        return;
+                    case 2:
+                        MainSpinner.FACTOR = 20.0f;
+                        mRouletteResult.setText(currentNumber2(360 - (degree % 360)));
+                        mPanel.setVisibility(View.VISIBLE);
+                        return;
+                    case 3:
+                        MainSpinner.FACTOR = 30.0f;
+                        mRouletteResult.setText(currentNumber3(360 - (degree % 360)));
+                        mPanel.setVisibility(View.VISIBLE);
+                        return;
+                    case 4:
+                        MainSpinner.FACTOR = 22.5f;
+                        mRouletteResult.setText(currentNumber4(360 - (degree % 360)));
+                        mPanel.setVisibility(View.VISIBLE);
+                        return;
+                    case 5:
+                        MainSpinner.FACTOR = 4.86f;
+                        mRouletteResult.setText(currentNumber5(360 - (degree % 360)));
+                        mPanel.setVisibility(View.VISIBLE);
+                        return;
+                    case 6:
+                        MainSpinner.FACTOR = 15.0f;
+                        mRouletteResult.setText(currentNumber6(360 - (degree % 360)));
+                        mPanel.setVisibility(View.VISIBLE);
+                        return;
+                    case 7:
+                        MainSpinner.FACTOR = 15.0f;
+                        mRouletteResult.setText(currentNumber7(360 - (degree % 360)));
+                        mPanel.setVisibility(View.VISIBLE);
+                        return;
+                    case 8:
+                        MainSpinner.FACTOR = 18.0f;
+                        mRouletteResult.setText(currentNumber8(360 - (degree % 360)));
+                        mPanel.setVisibility(View.VISIBLE);
+                        return;
+                    case 9:
+                        MainSpinner.FACTOR = 15.0f;
+                        mRouletteResult.setText(currentNumber9(360 - (degree % 360)));
+                        mPanel.setVisibility(View.VISIBLE);
+                        return;
+                    case 10:
+                        MainSpinner.FACTOR = 25.7f;
+                        mRouletteResult.setText(currentNumber10(360 - (degree % 360)));
+                        mPanel.setVisibility(View.VISIBLE);
+                        return;
+                    case 11:
+                        MainSpinner.FACTOR = 15.0f;
+                        mRouletteResult.setText(currentNumber11(360 - (degree % 360)));
+                        mPanel.setVisibility(View.VISIBLE);
+                        return;
+                    case 12:
+                        MainSpinner.FACTOR = 15.0f;
+                        mRouletteResult.setText(currentNumber12(360 - (degree % 360)));
+                        mPanel.setVisibility(View.VISIBLE);
+                        return;
+                    case 13:
+                        MainSpinner.FACTOR = 30.0f;
+                        mRouletteResult.setText(currentNumber13(360 - (degree % 360)));
+                        mPanel.setVisibility(View.VISIBLE);
+                        return;
+                    default:
+                        return;
+                }
+            }
+        });
+        mSelectedRouletteImg.startAnimation(rotateAnimation);
+    }
+
+    private void playAssetSound() {
+        try {
+            String assetName = "slot_machine_jackpot.wav";
+            AssetFileDescriptor afd = this.getAssets().openFd(assetName);
+            mMediaPlayer.setDataSource(afd.getFileDescriptor(), afd.getStartOffset(), afd.getLength());
+            afd.close();
+            mMediaPlayer.prepare();
+            mMediaPlayer.start();
+        } catch (Exception ex) {
+        }
     }
 
     private String currentNumber(int i) {
@@ -546,7 +604,7 @@ public class MainSpinner extends AppCompatActivity {
         }
         float f10 = FACTOR;
         if (f >= 17.0f * f10 && f <= f10 * 19.0f) {
-            str = "Donut";
+            str = "Chicken Biryani";
         }
         float f11 = FACTOR;
         if (f >= 19.0f * f11 && f <= f11 * 21.0f) {
