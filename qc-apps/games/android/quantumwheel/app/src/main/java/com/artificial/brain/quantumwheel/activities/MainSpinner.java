@@ -3,6 +3,7 @@ package com.artificial.brain.quantumwheel.activities;
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.content.res.AssetFileDescriptor;
+import android.graphics.Canvas;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
@@ -98,7 +99,7 @@ public class MainSpinner extends AppCompatActivity {
                         QuantumRandomNumber quantumRandomNumber = response.body();
                         mPanel.setVisibility(View.VISIBLE);
                         if (quantumRandomNumber != null) {
-                            mainSpinner2.degree = quantumRandomNumber.getQuantum_random_num();
+                            mainSpinner2.degree = quantumRandomNumber.getQuantum_random_num() + 224;
                             spin(mainSpinner2);
                         } else {
                             Toast.makeText(MainSpinner.this, R.string.something_wrong_error,
@@ -119,7 +120,6 @@ public class MainSpinner extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 mPanel.setVisibility(View.GONE);
-//                mRouletteResult.setText("");
                 mSpinBtn.setAlpha(1.0f);
                 mSpinBtn.setClickable(true);
             }
