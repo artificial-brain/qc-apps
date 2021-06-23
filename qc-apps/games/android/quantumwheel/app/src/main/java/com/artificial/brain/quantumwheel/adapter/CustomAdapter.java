@@ -13,8 +13,10 @@ import com.artificial.brain.quantumwheel.R;
 
 public class CustomAdapter extends BaseAdapter {
     Context context;
-    int[] rouletteGridImg = {R.drawable.heads_tails_small, R.drawable.yes_no_small, R.drawable.rock_paper_small, R.drawable.die_small, R.drawable.loves_me_small, R.drawable.casino_small, R.drawable.color_small, R.drawable.fast_food_small, R.drawable.lie_detector_small, R.drawable.freetime_activity_small, R.drawable.days_small, R.drawable.countries_small, R.drawable.zodiac_small, R.drawable.luck_small};
-    String[] rouletteGridTitle = {"Heads/Tails", "Yes/No", "Rock-Paper-Scissors", "Roll the die", "Loves me?", "Casino", "Lucky Color", "What to eat", "Lie Detector", "Freetime Activity", "Pick a day", "Holidays Place", "Zodiac Sign", "Lucky/Unlucky"};
+//    int[] rouletteGridImg = {R.drawable.heads_tails_small, R.drawable.yes_no_small, R.drawable.rock_paper_small, R.drawable.die_small, R.drawable.loves_me_small, R.drawable.casino_small, R.drawable.color_small, R.drawable.fast_food_small, R.drawable.lie_detector_small, R.drawable.freetime_activity_small, R.drawable.days_small, R.drawable.countries_small, R.drawable.zodiac_small, R.drawable.luck_small};
+//    String[] rouletteGridTitle = {"Heads/Tails", "Yes/No", "Rock-Paper-Scissors", "Roll the die", "Loves me?", "Casino", "Lucky Color", "What to eat", "Lie Detector", "Freetime Activity", "Pick a day", "Holidays Place", "Zodiac Sign", "Lucky/Unlucky"};
+    int[] rouletteGridImg = {R.drawable.fast_food, R.drawable.countries, R.drawable.freetime_activity, R.drawable.casino, R.drawable.heads_tails, R.drawable.yes_no, R.drawable.rock_paper, R.drawable.die, R.drawable.loves_me, R.drawable.color, R.drawable.lie_detector, R.drawable.days, R.drawable.zodiac, R.drawable.luck};
+    String[] rouletteGridTitle = {"What to eat", "Where to go on Holidays?", "Freetime Activity", "Casino", "Heads/Tails", "Yes/No", "Rock-Paper-Scissors", "Roll the dice", "Loves me?", "Lucky Color", "Lie Detector", "Pick a day", "Zodiac Sign for You", "Lucky or Unlucky"};
 
     private class ViewHolder {
         ImageView img;

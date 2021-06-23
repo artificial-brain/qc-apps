@@ -1,8 +1,10 @@
 package com.artificial.brain.quantumwheel.activities;
 
+import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.content.res.AssetFileDescriptor;
 import android.media.MediaPlayer;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
@@ -47,7 +49,8 @@ public class MainSpinner extends AppCompatActivity {
     private Handler handler = new Handler();
     private int slotCounter = 0;
     ArrayList<String> slots = new ArrayList<String>();
-
+    private Button mShare;
+    private Button mRateUs;
 
     @Override
     protected void onCreate(Bundle bundle) {
@@ -57,6 +60,8 @@ public class MainSpinner extends AppCompatActivity {
         setContentView(R.layout.activity_main_spin);
 
         mSpinBtn = findViewById(R.id.spin_btn);
+        mShare = findViewById(R.id.share_btn);
+        mRateUs = findViewById(R.id.like_btn);
         mRouletteResult = findViewById(R.id.current_text);
         mSelectedRouletteImg = findViewById(R.id.ic_wheel);
         mCurrentRouletteTitle = findViewById(R.id.current_roulette_title);
@@ -64,10 +69,18 @@ public class MainSpinner extends AppCompatActivity {
         Intent intent = getIntent();
         mSelectedRouletteImg.setImageResource(intent.getIntExtra("image", 0));
         pos = intent.getIntExtra("position", 0);
+        name = intent.getStringExtra("rouletteTitle");
         mCurrentRouletteTitle.setText(name);
+        mShare.setOnClickListener(shareOnClickListener);
+        mRateUs.setOnClickListener(rateUsOnClickListener);
         mSpinBtn.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
+
+                Bundle logEventBundle = new Bundle();
+                logEventBundle.putString(Constants.Spin_Clicked, Constants.Spin_Clicked);
+                MainApplication.firebaseAnalytics.logEvent(Constants.Spin_Clicked, logEventBundle);
+
                 mPanel.setVisibility(View.VISIBLE);
                 MainSpinner mainSpinner = MainSpinner.this;
                 mainSpinner.degree_old = mainSpinner.degree % 360;
@@ -106,7 +119,7 @@ public class MainSpinner extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 mPanel.setVisibility(View.GONE);
-                mRouletteResult.setText("");
+//                mRouletteResult.setText("");
                 mSpinBtn.setAlpha(1.0f);
                 mSpinBtn.setClickable(true);
             }
@@ -125,7 +138,6 @@ public class MainSpinner extends AppCompatActivity {
             @Override
             public void run() {
                 mRouletteResult.setText(slots.get(slotCounter));
-                System.out.println("slotCounter$$$$$: " + slotCounter);
                 slotCounter++;
                 if(slotCounter == slots.size()){
                     slotCounter = 0;
@@ -150,67 +162,65 @@ public class MainSpinner extends AppCompatActivity {
 
             @Override
             public void onAnimationEnd(Animation animation) {
-                PrintStream printStream = System.out;
-                printStream.println("*******" + pos);
                 mMediaPlayer.reset();
                 handler.removeCallbacks(myRunnable);
                 switch (pos) {
-                    case 0:
+                    case 4:
                         MainSpinner.FACTOR = 22.5f;
                         mRouletteResult.setText(currentNumber(360 - (degree % 360)));
                         mPanel.setVisibility(View.VISIBLE);
                         return;
-                    case 1:
+                    case 5:
                         MainSpinner.FACTOR = 30.0f;
                         mRouletteResult.setText(currentNumber1(360 - (degree % 360)));
                         mPanel.setVisibility(View.VISIBLE);
                         return;
-                    case 2:
+                    case 6:
                         MainSpinner.FACTOR = 20.0f;
                         mRouletteResult.setText(currentNumber2(360 - (degree % 360)));
                         mPanel.setVisibility(View.VISIBLE);
                         return;
-                    case 3:
+                    case 7:
                         MainSpinner.FACTOR = 30.0f;
                         mRouletteResult.setText(currentNumber3(360 - (degree % 360)));
                         mPanel.setVisibility(View.VISIBLE);
                         return;
-                    case 4:
+                    case 8:
                         MainSpinner.FACTOR = 22.5f;
                         mRouletteResult.setText(currentNumber4(360 - (degree % 360)));
                         mPanel.setVisibility(View.VISIBLE);
                         return;
-                    case 5:
+                    case 3:
                         MainSpinner.FACTOR = 4.86f;
                         mRouletteResult.setText(currentNumber5(360 - (degree % 360)));
                         mPanel.setVisibility(View.VISIBLE);
                         return;
-                    case 6:
+                    case 9:
                         MainSpinner.FACTOR = 15.0f;
                         mRouletteResult.setText(currentNumber6(360 - (degree % 360)));
                         mPanel.setVisibility(View.VISIBLE);
                         return;
-                    case 7:
+                    case 0:
                         MainSpinner.FACTOR = 15.0f;
                         mRouletteResult.setText(currentNumber7(360 - (degree % 360)));
                         mPanel.setVisibility(View.VISIBLE);
                         return;
-                    case 8:
+                    case 10:
                         MainSpinner.FACTOR = 18.0f;
                         mRouletteResult.setText(currentNumber8(360 - (degree % 360)));
                         mPanel.setVisibility(View.VISIBLE);
                         return;
-                    case 9:
+                    case 2:
                         MainSpinner.FACTOR = 15.0f;
                         mRouletteResult.setText(currentNumber9(360 - (degree % 360)));
                         mPanel.setVisibility(View.VISIBLE);
                         return;
-                    case 10:
+                    case 11:
                         MainSpinner.FACTOR = 25.7f;
                         mRouletteResult.setText(currentNumber10(360 - (degree % 360)));
                         mPanel.setVisibility(View.VISIBLE);
                         return;
-                    case 11:
+                    case 1:
                         MainSpinner.FACTOR = 15.0f;
                         mRouletteResult.setText(currentNumber11(360 - (degree % 360)));
                         mPanel.setVisibility(View.VISIBLE);
@@ -878,26 +888,24 @@ public class MainSpinner extends AppCompatActivity {
     private void createSlotArray(){
         slots.clear();
         if (pos == 0) {
-            slots.add("Heads");
-            slots.add("Tails");
-        }else if (pos == 1) {
-            slots.add("Yes");
-            slots.add("No");
-        }else if (pos == 2) {
-            slots.add("Rock");
-            slots.add("Paper");
-            slots.add("Scissors");
-        }else if (pos == 3) {
-            slots.add("1");
-            slots.add("2");
-            slots.add("3");
-            slots.add("4");
-            slots.add("5");
-            slots.add("6");
-        }else if (pos == 4) {
-            slots.add("Loves me");
-            slots.add("Loves me not");
-        }else if (pos == 5) {
+            slots.add("Pasta");
+            slots.add("Pizza");
+            slots.add("Salad");
+            slots.add("Burger");
+            slots.add("French Fries");
+        } else if (pos == 1) {
+            slots.add("London");
+            slots.add("Italy");
+            slots.add("India");
+            slots.add("France");
+            slots.add("Thailand");
+        }  else if (pos == 2) {
+            slots.add("Watch TV");
+            slots.add("Sleep");
+            slots.add("Go Outside");
+            slots.add("Play Games");
+            slots.add("Make Food");
+        } else if (pos == 3) {
             slots.add("0");
             slots.add("1");
             slots.add("2");
@@ -905,27 +913,71 @@ public class MainSpinner extends AppCompatActivity {
             slots.add("4");
             slots.add("5");
             slots.add("6");
+            slots.add("30");
+            slots.add("31");
+            slots.add("32");
+            slots.add("11");
+            slots.add("12");
+            slots.add("20");
             slots.add("7");
             slots.add("8");
             slots.add("9");
             slots.add("10");
-            slots.add("11");
-            slots.add("12");
-            slots.add("20");
             slots.add("21");
             slots.add("22");
-            slots.add("30");
-            slots.add("31");
-            slots.add("32");
             slots.add("33");
             slots.add("35");
             slots.add("36");
-        } else if (pos == 6) {
+        } else if (pos == 4) {
+            slots.add("Heads");
+            slots.add("Tails");
+        }else if (pos == 5) {
+            slots.add("Yes");
+            slots.add("No");
+        }else if (pos == 6) {
+            slots.add("Rock");
+            slots.add("Paper");
+            slots.add("Scissors");
+        }else if (pos == 7) {
+            slots.add("1");
+            slots.add("2");
+            slots.add("3");
+            slots.add("4");
+            slots.add("5");
+            slots.add("6");
+        }else if (pos == 8) {
+            slots.add("Loves me");
+            slots.add("Loves me not");
+        } else if (pos == 9) {
             slots.add("Black");
             slots.add("White");
             slots.add("Yellow");
             slots.add("Orange");
             slots.add("Yellow");
+        } else if (pos == 10) {
+            slots.add("Lie");
+            slots.add("Never");
+            slots.add("Always");
+            slots.add("Truth");
+            slots.add("Maybe");
+        } else if (pos == 11) {
+            slots.add("Monday");
+            slots.add("Saturday");
+            slots.add("Sunday");
+            slots.add("Wednesday");
+            slots.add("Friday");
+        } else if (pos == 12) {
+            slots.add("Capricorn");
+            slots.add("Aries");
+            slots.add("Gemini");
+            slots.add("Cancer");
+            slots.add("Leo");
+            slots.add("Libra");
+            slots.add("Virgo");
+            slots.add("Scorpio");
+        } else if (pos == 13) {
+            slots.add("Lucky");
+            slots.add("Unlucky");
         }
     }
 
@@ -934,4 +986,60 @@ public class MainSpinner extends AppCompatActivity {
         super.onBackPressed();
         mMediaPlayer.reset();
     }
+
+    View.OnClickListener shareOnClickListener = new OnClickListener() {
+        @Override
+        public void onClick(View v) {
+
+            Bundle logEventBundle = new Bundle();
+            logEventBundle.putString(Constants.Spin_Share_Clicked, Constants.Spin_Share_Clicked);
+            MainApplication.firebaseAnalytics.logEvent(Constants.Spin_Share_Clicked, logEventBundle);
+
+            String appName = getString(R.string.app_name);
+            try {
+                Intent intent = new Intent();
+                intent.setAction("android.intent.action.SEND");
+                intent.setType("text/plain");
+                String share;
+                if (mRouletteResult.getText().toString().trim().length() == 0) {
+                    share = getResources().getString(R.string.share_description);
+                } else {
+                    share = getResources().getString(R.string.share_first_part) + " \'" +
+                            mRouletteResult.getText().toString().trim() + "\' for me in \'" + name + "\' " +
+                            getResources().getString(R.string.share_last_part);
+                }
+                String sb = share +
+                        "-\n" +
+                        "https://play.google.com/store/apps/details?id=" + getPackageName();
+                intent.putExtra("android.intent.extra.TEXT", sb);
+                startActivity(Intent.createChooser(intent, "Share App : " +appName));
+            } catch (Exception unused) {
+            }
+        }
+    };
+
+    View.OnClickListener rateUsOnClickListener = new OnClickListener() {
+        @Override
+        public void onClick(View v) {
+
+            Bundle logEventBundle = new Bundle();
+            logEventBundle.putString(Constants.Spin_RateUs_Clicked, Constants.Spin_RateUs_Clicked);
+            MainApplication.firebaseAnalytics.logEvent(Constants.Spin_RateUs_Clicked, logEventBundle);
+
+            String str = "android.intent.action.VIEW";
+            String sb = "******" +
+                    getPackageName();
+            MainSpinner mainSpinner = MainSpinner.this;
+            try {
+
+                String sb2 = "market://details?id=" +
+                        getPackageName();
+                mainSpinner.startActivity(new Intent(str, Uri.parse(sb2)));
+            } catch (ActivityNotFoundException unused) {
+                String sb3 = "https://play.google.com/store/apps/details?id=" +
+                        getPackageName();
+                mainSpinner.startActivity(new Intent(str, Uri.parse(sb3)));
+            }
+        }
+    };
 }

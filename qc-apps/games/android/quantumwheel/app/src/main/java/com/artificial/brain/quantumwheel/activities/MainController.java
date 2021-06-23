@@ -9,13 +9,15 @@ import android.widget.GridView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.artificial.brain.quantumwheel.MainApplication;
 import com.artificial.brain.quantumwheel.R;
 import com.artificial.brain.quantumwheel.adapter.CustomAdapter;
+import com.artificial.brain.quantumwheel.utils.Constants;
 
 public class MainController extends AppCompatActivity {
     GridView mGridView;
-    int[] rouletteImg = {R.drawable.heads_tails, R.drawable.yes_no, R.drawable.rock_paper, R.drawable.die, R.drawable.loves_me, R.drawable.casino, R.drawable.color, R.drawable.fast_food, R.drawable.lie_detector, R.drawable.freetime_activity, R.drawable.days, R.drawable.countries, R.drawable.zodiac, R.drawable.luck};
-    String[] rouletteTitle = {"Heads/Tails", "Yes/No", "Rock-Paper-Scissors", "Roll the dice", "Loves me?", "Casino", "Lucky Color", "What to eat", "Lie Detector", "Freetime Activity", "Pick a day", "Where to go on Holidays?", "Zodiac Sign for You", "Lucky or Unlucky"};
+    int[] rouletteImg = {R.drawable.fast_food, R.drawable.countries, R.drawable.freetime_activity, R.drawable.casino, R.drawable.heads_tails, R.drawable.yes_no, R.drawable.rock_paper, R.drawable.die, R.drawable.loves_me, R.drawable.color, R.drawable.lie_detector, R.drawable.days, R.drawable.zodiac, R.drawable.luck};
+    String[] rouletteTitle = {"What to eat", "Where to go on Holidays?", "Freetime Activity", "Casino", "Heads/Tails", "Yes/No", "Rock-Paper-Scissors", "Roll the dice", "Loves me?", "Lucky Color", "Lie Detector", "Pick a day", "Zodiac Sign for You", "Lucky or Unlucky"};
 
     @Override
     protected void onCreate(Bundle bundle) {
@@ -37,6 +39,10 @@ public class MainController extends AppCompatActivity {
         Intent intent = new Intent(this, MainSpinner.class);
         intent.putExtra("image", rouletteImg[i]);
         intent.putExtra("position", i);
+        intent.putExtra("rouletteTitle", rouletteTitle[i]);
+        Bundle logEventBundle = new Bundle();
+        logEventBundle.putString(Constants.Roulette_Clicked, rouletteTitle[i]);
+        MainApplication.firebaseAnalytics.logEvent(Constants.Roulette_Clicked, logEventBundle);
         startActivity(intent);
     }
 }

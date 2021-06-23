@@ -7,7 +7,7 @@
     <RelativeLayout
         android:id="@+id/gridviewdata"
         android:layout_width="190dp"
-        android:layout_height="180dp"
+        android:layout_height="200dp"
         android:layout_marginTop="5dp">
 
         <ImageView

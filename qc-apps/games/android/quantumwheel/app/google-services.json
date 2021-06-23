@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "44125738007",
+    "project_id": "quantum-wheel",
+    "storage_bucket": "quantum-wheel.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:44125738007:android:571b0f6d877f21376e3852",
+        "android_client_info": {
+          "package_name": "com.artificial.brain.quantumwheel"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "44125738007-rj4afo8et9ck47ne5g7lbrb753msjgmv.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDO0s0jaEeVLnFGrJVoYN0XyOsNlWk1vFw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "44125738007-rj4afo8et9ck47ne5g7lbrb753msjgmv.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

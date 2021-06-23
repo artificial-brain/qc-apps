@@ -17,7 +17,9 @@ import android.widget.TextView;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.artificial.brain.quantumwheel.MainApplication;
 import com.artificial.brain.quantumwheel.R;
+import com.artificial.brain.quantumwheel.utils.Constants;
 
 import java.io.PrintStream;
 
@@ -47,18 +49,26 @@ public class Splash extends AppCompatActivity {
         mPlay.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
+                Bundle logEventBundle = new Bundle();
+                logEventBundle.putString(Constants.User_Clicked, "Splash Screen");
+                MainApplication.firebaseAnalytics.logEvent(Constants.User_Clicked, logEventBundle);
                 startActivity(new Intent(Splash.this, MainController.class));
             }
         });
         mShare.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
+
+                Bundle logEventBundle = new Bundle();
+                logEventBundle.putString(Constants.Spin_Share_Clicked, Constants.Splash_Share_Clicked);
+                MainApplication.firebaseAnalytics.logEvent(Constants.Splash_Share_Clicked, logEventBundle);
+
                 String appName = getString(R.string.app_name);
                 try {
                     Intent intent = new Intent();
                     intent.setAction("android.intent.action.SEND");
                     intent.setType("text/plain");
-                    String sb = appName +
+                    String sb = getResources().getString(R.string.share_description) +
                             "-\n" +
                             "https://play.google.com/store/apps/details?id=" + getPackageName();
                     intent.putExtra("android.intent.extra.TEXT", sb);
@@ -69,6 +79,11 @@ public class Splash extends AppCompatActivity {
         });
         mRateUs.setOnClickListener(new OnClickListener() {
             public void onClick(View view) {
+
+                Bundle logEventBundle = new Bundle();
+                logEventBundle.putString(Constants.Splash_RateUs_Clicked, Constants.Splash_RateUs_Clicked);
+                MainApplication.firebaseAnalytics.logEvent(Constants.Splash_RateUs_Clicked, logEventBundle);
+
                 String str = "android.intent.action.VIEW";
                 PrintStream printStream = System.out;
                 String sb = "******" +
