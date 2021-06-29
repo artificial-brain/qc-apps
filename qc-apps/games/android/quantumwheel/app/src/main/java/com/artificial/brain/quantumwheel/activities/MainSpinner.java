@@ -1,6 +1,8 @@
 package com.artificial.brain.quantumwheel.activities;
 
+import android.app.AlertDialog;
 import android.content.ActivityNotFoundException;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.AssetFileDescriptor;
 import android.graphics.Canvas;
@@ -16,6 +18,7 @@ import android.view.animation.DecelerateInterpolator;
 import android.view.animation.RotateAnimation;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -52,6 +55,8 @@ public class MainSpinner extends AppCompatActivity {
     ArrayList<String> slots = new ArrayList<String>();
     private Button mShare;
     private Button mRateUs;
+    private Switch realDeviceSwitch;
+    Random rand;
 
     @Override
     protected void onCreate(Bundle bundle) {
@@ -59,6 +64,7 @@ public class MainSpinner extends AppCompatActivity {
         requestWindowFeature(1);
         getWindow().setFlags(1024, 1024);
         setContentView(R.layout.activity_main_spin);
+        rand = new Random();
 
         mSpinBtn = findViewById(R.id.spin_btn);
         mShare = findViewById(R.id.share_btn);
@@ -74,32 +80,50 @@ public class MainSpinner extends AppCompatActivity {
         mCurrentRouletteTitle.setText(name);
         mShare.setOnClickListener(shareOnClickListener);
         mRateUs.setOnClickListener(rateUsOnClickListener);
+        realDeviceSwitch = findViewById(R.id.real_device_switch);
+
+        realDeviceSwitch.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (realDeviceSwitch.isChecked()) {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(MainSpinner.this);
+
+                    builder.setMessage(R.string.real_device_notification);
+
+                    builder.setPositiveButton(R.string.okay, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            // User clicked OK button
+                        }
+                    });
+                    AlertDialog dialog = builder.create();
+                    dialog.show();
+                }
+            }
+        });
         mSpinBtn.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                mSpinBtn.setClickable(false);
                 Bundle logEventBundle = new Bundle();
                 logEventBundle.putString(Constants.Spin_Clicked, Constants.Spin_Clicked);
                 MainApplication.firebaseAnalytics.logEvent(Constants.Spin_Clicked, logEventBundle);
 
-                mPanel.setVisibility(View.VISIBLE);
                 MainSpinner mainSpinner = MainSpinner.this;
                 mainSpinner.degree_old = mainSpinner.degree % 360;
                 MainSpinner mainSpinner2 = MainSpinner.this;
-                int length = 12;
-                String provider = false ?
+                int length = 5;
+                String provider = realDeviceSwitch.isChecked()  ?
                         Constants.IBM_PROVIDER : Constants.GOOGLE_PROVIDER;
-                String api = false ? Constants.API : "";
-                String device = false ? Constants.IBM_DEVICE : "";
+                String api = realDeviceSwitch.isChecked()  ? Constants.API : "";
+                String device = realDeviceSwitch.isChecked()  ? Constants.IBM_DEVICE : "";
                 RandomNumberInput randomNumberInput = new RandomNumberInput(length, provider, api, device);
                 MainApplication.apiManager.generateRandomNumber(randomNumberInput, new Callback<QuantumRandomNumber>() {
                     @Override
                     public void onResponse(Call<QuantumRandomNumber> call,
                                            Response<QuantumRandomNumber> response) {
                         QuantumRandomNumber quantumRandomNumber = response.body();
-                        mPanel.setVisibility(View.VISIBLE);
                         if (quantumRandomNumber != null) {
-                            mainSpinner2.degree = quantumRandomNumber.getQuantum_random_num() + 224;
+                            mainSpinner2.degree = (quantumRandomNumber.getQuantum_random_num() * 50) + 2497;
                             spin(mainSpinner2);
                         } else {
                             Toast.makeText(MainSpinner.this, R.string.something_wrong_error,
@@ -109,7 +133,8 @@ public class MainSpinner extends AppCompatActivity {
 
                     @Override
                     public void onFailure(Call<QuantumRandomNumber> call, Throwable t) {
-                        mPanel.setVisibility(View.VISIBLE);
+                        mPanel.setVisibility(View.GONE);
+                        mSpinBtn.setClickable(true);
                         Toast.makeText(MainSpinner.this, R.string.something_wrong_error,
                                 Toast.LENGTH_LONG).show();
                     }
@@ -120,14 +145,11 @@ public class MainSpinner extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 mPanel.setVisibility(View.GONE);
-                mSpinBtn.setAlpha(1.0f);
-                mSpinBtn.setClickable(true);
             }
         });
     }
 
     private void spin(MainSpinner mainSpinner2){
-//      mainSpinner2.degree = mainSpinner2.rand.nextInt(3600) + 720;
         RotateAnimation rotateAnimation = new RotateAnimation((float) degree_old,
                 (float) degree, 1, 0.5f, 1, 0.5f);
         rotateAnimation.setDuration(3600);
@@ -153,8 +175,6 @@ public class MainSpinner extends AppCompatActivity {
             @Override
             public void onAnimationStart(Animation animation) {
                 mSpinBtn.setAlpha(0.95f);
-                mSpinBtn.setClickable(false);
-                mPanel.setVisibility(View.GONE);
                 playAssetSound();
                 handler.postDelayed(myRunnable, 100);
                 createSlotArray();
@@ -163,6 +183,8 @@ public class MainSpinner extends AppCompatActivity {
             @Override
             public void onAnimationEnd(Animation animation) {
                 mMediaPlayer.reset();
+                mPanel.setVisibility(View.GONE);
+                mSpinBtn.setClickable(true);
                 handler.removeCallbacks(myRunnable);
                 switch (pos) {
                     case 4:

@@ -1,9 +1,11 @@
 <resources>
     <string name="description">If you have to make a decision \n but can\'t decide? \n\n Just spin the wheel \n and let nature decide it for you based on the principle of Quantum Superposition!</string>
     <string name="app_name">Quantum Wheel</string>
-    <string name="something_wrong_error">Something went wrong - Nature is not in a mood to select. Please try again later.</string>
+    <string name="something_wrong_error">Something went wrong - Nature is not in a mood to choose. Please try again later.</string>
     <string name="share_description">If you have to make a decision but can\'t decide?\n\nJust spin the wheel and let nature decide it for you based on the principle of Quantum Superposition! </string>
     <string name="share_first_part">Nature selected </string>
     <string name="share_last_part"> based on the principle of Quantum Superposition! You could also try the app #quantumwheel - </string>
-
+    <string name="run_on_real_device">Run on Real device?</string>
+    <string name="real_device_notification">Please note that it may take 5-10 mins to get results from a real quantum device due to limited availability but it would be truly random.</string>
+    <string name="okay">Okay</string>
 </resources>

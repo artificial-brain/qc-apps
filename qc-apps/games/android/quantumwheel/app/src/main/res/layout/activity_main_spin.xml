@@ -11,6 +11,17 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
+        <Switch
+            android:id="@+id/real_device_switch"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/run_on_real_device"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentTop="true"
+            android:textColor="@android:color/white"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="40dp"/>
+
         <Button
             android:id="@+id/spin_btn"
             android:layout_width="100dp"
