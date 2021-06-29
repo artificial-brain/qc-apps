@@ -104,6 +104,7 @@ public class MainSpinner extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 mSpinBtn.setClickable(false);
+                mPanel.setVisibility(View.VISIBLE);
                 Bundle logEventBundle = new Bundle();
                 logEventBundle.putString(Constants.Spin_Clicked, Constants.Spin_Clicked);
                 MainApplication.firebaseAnalytics.logEvent(Constants.Spin_Clicked, logEventBundle);
