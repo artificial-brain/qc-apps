@@ -2,7 +2,7 @@ package com.artificial.brain.quantumwheel.utils;
 
 public final class Constants {
     public static final String base_url = "https://api.quantumcat.io";
-    public static final String API = "5aa0191243af96e91c5c65c65ffdedadb7f03f5d1d6908c6495d089ff636be81fc2ba2f2449bb2c3fefe90b822d0f4eb4ffa5ad50afadf81ce17bb524c10b08f";
+    public static final String API = "";
     public static final String IBM_DEVICE = "ibmq_belem";
     public static final String IBM_PROVIDER = "IBM";
     public static final String GOOGLE_PROVIDER = "GOOGLE";
