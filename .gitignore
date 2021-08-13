@@ -145,3 +145,4 @@ dmypy.json
 # pycharm
 .idea/*
 quantumcat/data/
+qc-apps/apps/openquantum/openpickle.pk
