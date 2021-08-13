@@ -3,6 +3,8 @@ import requests
 import json
 import pickle
 from models.data import Data
+import re
+
 
 URL = "http://localhost:8000/openQuantum"
 filename = 'openpickle.pk'
@@ -26,18 +28,21 @@ div.stButton > button:first-child {
 
 command = st.text_input('Enter Command')
 if st.button('Submit'):
-    with open(filename, 'rb') as fi:
-        data = pickle.load(fi)
+    if re.search("^Create a ", command):
+        data = Data()
+    else:
+        with open(filename, 'rb') as fi:
+            data = pickle.load(fi)
     request_json = {
         "command": command,
         "num_qubits": data.num_qubits,
         "circuit_name": data.circuit_name,
         "operations": data.operations
     }
-
     response = requests.post(url=URL, data=json.dumps(request_json))
     if response.status_code == 200:
         response_json = json.loads(response.text)
+
         st.write('Circuit Name is ' + response_json['circuit_name'])
         st.image(response_json['filename'])
 
