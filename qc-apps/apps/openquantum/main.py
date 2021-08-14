@@ -4,15 +4,27 @@ import json
 import pickle
 from models.data import Data
 import re
-from PIL import Image
+import time
+from time import sleep
+import sys
 
 
-URL = "http://localhost:8000/openQuantum"
+URL = "https://api.quantumcat.io/openQuantum"
 filename = 'openpickle.pk'
 
 # Use the full page instead of a narrow central column
-st.set_page_config(layout="wide")
-col1, col2 = st.beta_columns(2)
+quantumcat_logo_url = "https://raw.githubusercontent.com/artificial-brain/quantumcat/" \
+                     "assets/quantumcat/logo/quantum_cat_logo.jpg"
+
+# Set page title and favicon.
+st.set_page_config(
+    page_title="openquantum", page_icon=quantumcat_logo_url, layout="wide"
+)
+
+col1, col2 = st.beta_columns([2, 1])
+
+st.sidebar.markdown('__Installation__')
+st.sidebar.code('$ pip install quantumcat')
 
 
 @st.cache
@@ -31,15 +43,63 @@ div.stButton > button:first-child {
 }
 </style>""", unsafe_allow_html=True)
 
+
 command = col1.text_input('Enter Command')
 submit_button = col1.button('Submit')
 col1.write('#### Powered by [quantumcat](https://github.com/artificial-brain/quantumcat)')
 col1.write('')
-image = Image.open('assets/circle-particles.gif')
+
+def header_code():
+    code_header_string = '#quantumcat code'
+    import_string = 'from quantumcat.circuit import QCircuit'
+    circuit_string = 'circuit = QCircuit(' + str(data.num_qubits) + ')'
+
+    with col2:
+        code_header_text = st.empty()
+        import_text = st.empty()
+        circuit_text = st.empty()
+
+    all_words = ' '
+    time.sleep(0.5)
+    for letter in code_header_string:
+        sleep(0.03)  # In seconds
+        all_words = all_words + letter
+        with col2:
+            code_header_text.write(all_words)
+
+    all_words = ' '
+    sleep(0.5)
+    for letter in import_string:
+        sleep(0.03)  # In seconds
+        all_words = all_words + letter
+        with col2:
+            import_text.write(all_words)
+
+    all_words = ' '
+    sleep(0.5)
+    for letter in circuit_string:
+        sleep(0.03)  # In seconds
+        all_words = all_words + letter
+        with col2:
+            circuit_text.write(all_words)
+
+
+def body_code(code_string):
+    with col2:
+        code_body_text = st.empty()
+
+    all_words = ' '
+    for letter in code_string:
+        sleep(0.03)  # In seconds
+        all_words = all_words + letter
+        with col2:
+            code_body_text.write(all_words)
+
 
 if submit_button:
-    loading = col1.image('https://github.com/artificial-brain/quantumcat/blob/assets/quantumcat/screen.gif?raw=true')
-    if re.search("^Create a ", command):
+    loading = col1.image('https://github.com/artificial-brain/quantumcat/blob/assets/quantumcat/opengreen.gif?raw=true',
+                         width=200)
+    if re.search("^Create a ", command, re.IGNORECASE):
         data = Data()
     else:
         with open(filename, 'rb') as fi:
@@ -55,17 +115,18 @@ if submit_button:
         loading.empty()
         response_json = json.loads(response.text)
 
-        col1.write('Circuit diagram for ' + response_json['circuit_name'])
+        col1.write('Random circuit name ' + response_json['circuit_name'])
         col1.image(response_json['filename'])
 
         data.num_qubits = response_json['num_qubits']
         data.circuit_name = response_json['circuit_name']
         data.operations = response_json['operations']
 
+        with open(filename, 'wb') as fi:
+            pickle.dump(data, fi)
+
         if data.operations != '':
-            col2.write('#quantumcat code')
-            col2.write('from quantumcat.circuit import QCircuit')
-            col2.write('circuit = QCircuit(' + str(data.num_qubits) + ')')
+            header_code()
             for op in data.operations:
                 operation = next(iter(op.items()))
                 i = 0
@@ -76,25 +137,22 @@ if submit_button:
                     else:
                         gate_qubits = gate_qubits + ',' + (str(elem))
                     i = i + 1
+                code_string = f'circuit.{operation[0]}({gate_qubits})'
+                body_code(code_string)
 
-                col2.write(f'circuit.{operation[0]}({gate_qubits})')
-            if re.search("^Execute ", command):
+            if re.search("^Execute ", command, re.IGNORECASE):
                 col2.write('circuit.measure_all()')
+                sleep(0.5)
                 on = re.findall(r'on\s*([^.]+|\S+)', command)[0]
-
                 if on.lower() == 'ibm':
-                    col2.write('counts = circuit.execute(provider=providers.IBM_PROVIDER)')
+                    code_string = 'counts = circuit.execute(provider=providers.IBM_PROVIDER)'
                 elif on == 'google':
-                    col2.write('counts = circuit.execute(provider=providers.GOOGLE_PROVIDER)')
+                    code_string = 'counts = circuit.execute(provider=providers.GOOGLE_PROVIDER)'
                 elif on == 'aws':
-                    col2.write('counts = circuit.execute(provider=providers.AMAZON_PROVIDER)')
-
-                col2.write('circuit.histogram(counts)')
-
+                    code_string = 'counts = circuit.execute(provider=providers.AMAZON_PROVIDER)'
+                body_code(code_string)
+                code_string = 'circuit.histogram(counts)'
+                body_code(code_string)
         else:
-            col2.write('#quantumcat code')
-            col2.write('from quantumcat.circuit import QCircuit')
-            col2.write('circuit = QCircuit(' + str(data.num_qubits) + ')')
+            header_code()
 
-        with open(filename, 'wb') as fi:
-            pickle.dump(data, fi)
