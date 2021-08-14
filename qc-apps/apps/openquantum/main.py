@@ -25,6 +25,14 @@ col1, col2 = st.beta_columns([2, 1])
 
 st.sidebar.markdown('__Installation__')
 st.sidebar.code('$ pip install quantumcat')
+st.sidebar.write('Few command examples:')
+st.sidebar.code('Create a circuit of 2 qubits')
+st.sidebar.code('Apply h_gate to 0')
+st.sidebar.code('Apply cx_gate to 0, 1')
+st.sidebar.code('Execute on Qiskit')
+st.sidebar.code('Execute on Cirq')
+st.sidebar.code('Execute on Braket')
+
 
 
 @st.cache
@@ -144,11 +152,11 @@ if submit_button:
                 col2.write('circuit.measure_all()')
                 sleep(0.5)
                 on = re.findall(r'on\s*([^.]+|\S+)', command)[0]
-                if on.lower() == 'ibm':
+                if on.lower() == 'qiskit':
                     code_string = 'counts = circuit.execute(provider=providers.IBM_PROVIDER)'
-                elif on == 'google':
+                elif on.lower() == 'cirq':
                     code_string = 'counts = circuit.execute(provider=providers.GOOGLE_PROVIDER)'
-                elif on == 'aws':
+                elif on.lower() == 'braket':
                     code_string = 'counts = circuit.execute(provider=providers.AMAZON_PROVIDER)'
                 body_code(code_string)
                 code_string = 'circuit.histogram(counts)'
